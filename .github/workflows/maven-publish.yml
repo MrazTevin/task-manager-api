@@ -30,6 +30,7 @@ jobs:
 
     - name: Build with Maven
       run: |
+            cd task-infra
             mvn -B package --file pom.xml
             mkdir artifacts && cp target/*.jar artifacts
             cd artifacts & ls
@@ -38,4 +39,4 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: github-actions-artifact
-        path: artifacts
+        path: task-infra/artifacts
