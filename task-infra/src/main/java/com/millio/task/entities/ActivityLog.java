@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "activity_logs")
 @Data
 @NoArgsConstructor
 public class ActivityLog {

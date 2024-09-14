@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
+@Table(name = "user_tasks")
 @Data
 @NoArgsConstructor
 public class Task {

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "task_comments")
 @Data
 @NoArgsConstructor
 public class Comment {
