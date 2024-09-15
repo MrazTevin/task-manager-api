@@ -26,8 +26,18 @@ jobs:
         # Convert repository name to lowercase
         REPO_NAME=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
         
+        # Find the Dockerfile
+        DOCKERFILE_PATH=$(find ./task-infra -name Dockerfile -o -name dockerfile)
+        if [ -z "$DOCKERFILE_PATH" ]; then
+          echo "Dockerfile not found in task-infra directory or its subdirectories"
+          exit 1
+        fi
+        
+        # Extract the directory containing the Dockerfile
+        DOCKER_CONTEXT=$(dirname "$DOCKERFILE_PATH")
+        
         # Build and push the application image
-        docker build -t ghcr.io/${REPO_NAME}:millio-v1 ./task-infra
+        docker build -t ghcr.io/${REPO_NAME}:millio-v1 -f "$DOCKERFILE_PATH" "$DOCKER_CONTEXT"
         docker push ghcr.io/${REPO_NAME}:millio-v1
         
         # Push the PostgreSQL image (no need to build as it's an official image)
