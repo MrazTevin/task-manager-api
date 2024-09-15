@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Entity
+@Table(name = "task_statuses")
 @Data
 @NoArgsConstructor
 public class Status {
