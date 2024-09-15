@@ -34,17 +34,18 @@ jobs:
         docker pull postgres:16
         docker tag postgres:16 ghcr.io/${REPO_NAME}:millio-db
         docker push ghcr.io/${REPO_NAME}:millio-db
-
-    - name: Update compose file
+    
+    - name: Update registry-compose.yaml
       run: |
         REPO_NAME=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
-        sed -i 's|build:|image: ghcr.io/'${REPO_NAME}':millio-v1|' ./task-infra/compose.yaml
-        sed -i 's|image: postgres:16|image: ghcr.io/'${REPO_NAME}':millio-db|' ./task-infra/compose.yaml
+        cp ./task-infra/compose.yaml ./task-infra/registry-compose.yaml
+        sed -i 's|build:|image: ghcr.io/'${REPO_NAME}':millio-v1|' ./task-infra/registry-compose.yaml
+        sed -i 's|image: postgres:16|image: ghcr.io/'${REPO_NAME}':millio-db|' ./task-infra/registry-compose.yaml
         
     - name: Commit and push changes
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add ./task-infra/compose.yaml
-        git commit -m "Update compose.yaml with new image references" || echo "No changes to commit"
+        git add ./task-infra/registry-compose.yaml
+        git commit -m "Add registry-compose.yaml with registry image references" || echo "No changes to commit"
         git push
