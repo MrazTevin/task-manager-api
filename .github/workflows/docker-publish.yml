@@ -24,8 +24,11 @@ jobs:
 
     - name: Build and push Docker images
       run: |
-        docker build -t ghcr.io/${{ github.repository }}/service1:latest ./service1
-        docker build -t ghcr.io/${{ github.repository }}/service2:latest ./service2
-        docker push ghcr.io/${{ github.repository }}/service1:latest
-        docker push ghcr.io/${{ github.repository }}/service2:latest
+        REPO_NAME=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+        
+        docker build -t ghcr.io/${REPO_NAME}:millio-v1 ./service1
+        docker push ghcr.io/${REPO_NAME}:millio-v1
+        
+        docker build -t ghcr.io/${REPO_NAME}:millio-db ./service2
+        docker push ghcr.io/${REPO_NAME}:millio-db
 
