@@ -68,5 +68,9 @@ jobs:
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"
         git add ./task-infra/registry-compose.yaml
-        git commit -m "Add registry-compose.yaml with registry image references" || echo "No changes to commit"
-        git push
+        if git diff --staged --quiet; then
+          echo "No changes to commit"
+        else 
+          git commit -m "Update registry-compose.yaml with new image references"
+          git push
+        fi
