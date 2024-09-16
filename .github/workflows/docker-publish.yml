@@ -89,7 +89,7 @@ jobs:
 
     - name: Deploy to Railway
       run: |
-        railway up --detach --service app --dockerfile ./task-infra/registry-compose.yaml
-        railway up --detach --service postgres_db --dockerfile ./task-infra/registry-compose.yaml
+        railway up --detach --service app -f ./task-infra/registry-compose.yaml
+        railway up --detach --service postgres_db -f ./task-infra/registry-compose.yaml
       env:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
