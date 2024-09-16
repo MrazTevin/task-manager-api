@@ -74,9 +74,19 @@ jobs:
           git commit -m "Update registry-compose.yaml with new image references"
           git push
         fi
+    - name: Debug Railway Token
+      run: |
+        if [ -n "$RAILWAY_TOKEN" ]; then
+          echo "RAILWAY_TOKEN is set (value hidden)"
+        else
+          echo "RAILWAY_TOKEN is not set"
+        fi
+      env:
+        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+
     - name: Deploy to Railway
       env:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
       run: |
-        npm i -g @railway/cli
-        railway up
+        npm install -g @railway/cli
+        railway up --token "$RAILWAY_TOKEN"
