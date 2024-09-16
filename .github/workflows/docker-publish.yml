@@ -55,25 +55,28 @@ jobs:
         docker pull postgres:16
         docker tag postgres:16 ghcr.io/${REPO_NAME}:millio-db
         docker push ghcr.io/${REPO_NAME}:millio-db
-    
+
     - name: Update registry-compose.yaml
       run: |
-        REPO_NAME=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
-        cp ./task-infra/compose.yaml ./task-infra/registry-compose.yaml
-        sed -i 's|build:|image: ghcr.io/'${REPO_NAME}':millio-v1|' ./task-infra/registry-compose.yaml
-        sed -i 's|image: postgres:16|image: ghcr.io/'${REPO_NAME}':millio-db|' ./task-infra/registry-compose.yaml
-        
-    - name: Commit and push changes
-      run: |
-        git config --local user.email "github-actions[bot]@users.noreply.github.com"
-        git config --local user.name "github-actions[bot]"
-        git add ./task-infra/registry-compose.yaml
-        if git diff --staged --quiet; then
-          echo "No changes to commit"
-        else 
-          git commit -m "Update registry-compose.yaml with new image references"
-          git push
+        if [ ! -f ./task-infra/registry-compose.yaml ]; then
+          REPO_NAME=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+          cp ./task-infra/compose.yaml ./task-infra/registry-compose.yaml
+          sed -i 's|build:|image: ghcr.io/'${REPO_NAME}':millio-v1|' ./task-infra/registry-compose.yaml
+          sed -i 's|image: postgres:16|image: ghcr.io/'${REPO_NAME}':millio-db|' ./task-infra/registry-compose.yaml
         fi
+
+    - name: Commit and push changes if registry-compose.yaml was created
+      run: |
+        if [ -n "$(git status --porcelain ./task-infra/registry-compose.yaml)" ]; then
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add ./task-infra/registry-compose.yaml
+          git commit -m "Create registry-compose.yaml with image references"
+          git push
+        else
+          echo "registry-compose.yaml already exists and is up to date"
+        fi
+
     - name: Debug Railway Token and Project ID
       run: |
         if [ -n "$RAILWAY_TOKEN" ]; then
@@ -89,7 +92,7 @@ jobs:
 
     - name: Deploy to Railway
       run: |
-        railway up --detach --service app -f ./task-infra/registry-compose.yaml
-        railway up --detach --service postgres_db -f ./task-infra/registry-compose.yaml
+        railway up --detach --service app -- -f ./task-infra/registry-compose.yaml
+        railway up --detach --service postgres_db -- -f ./task-infra/registry-compose.yaml
       env:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
