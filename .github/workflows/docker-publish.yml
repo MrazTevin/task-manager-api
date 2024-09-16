@@ -95,4 +95,4 @@ jobs:
         railway up --detach --service app --file ./task-infra/registry-compose.yaml
         railway up --detach --service postgres_db --file ./task-infra/registry-compose.yaml
       env:
-      RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
