@@ -74,3 +74,9 @@ jobs:
           git commit -m "Update registry-compose.yaml with new image references"
           git push
         fi
+    - name: Deploy to Railway
+      env:
+        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+      run: |
+        npm i -g @railway/cli
+        railway up
