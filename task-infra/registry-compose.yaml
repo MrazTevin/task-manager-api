@@ -2,7 +2,6 @@
 services:
   app:
     image: ghcr.io/mraztevin/task-manager-api:millio-v1
-    container_name: task_api_app
     environment:
       SPRING_DATA_SOURCE_URL: jdbc:postgresql://postgres_db:5432/${POSTGRES_DB}
       SPRING_DATA_SOURCE_USERNAME: ${POSTGRES_USER}
@@ -14,7 +13,6 @@ services:
         condition: service_healthy
 
   postgres_db:
-    container_name: task_api_manager
     image: ghcr.io/mraztevin/task-manager-api:millio-db
     ports:
       - "5432:5432"
