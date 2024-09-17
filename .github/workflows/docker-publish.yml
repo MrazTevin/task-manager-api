@@ -90,6 +90,13 @@ jobs:
     - name: Install Render CLI
       run: curl -fsSL https://render.com/static/cli/install.sh | bash
 
+    - name: Install Render CLI
+      run: |
+        curl -fsSL https://render.com/static/cli/install.sh | bash
+        echo 'export PATH="$HOME/.render-cli/bin:$PATH"' >> ~/.bashrc
+        source ~/.bashrc
+      shell: bash
+
     - name: Deploy Application Image to Render
       run: |
         render services update srv-crl0esogph6c73anil0g \
@@ -102,7 +109,7 @@ jobs:
 
     - name: Deploy PostgreSQL Image to Render
       run: |
-        render services update <db-service-id> \
+        render services update dpg-crl0hgrqf0us73cmfm7g-a \
           --docker-image ghcr.io/${{ github.repository }}:millio-db
       env:
         RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
