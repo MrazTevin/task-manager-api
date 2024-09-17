@@ -87,15 +87,16 @@ jobs:
       env:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
-    - name: Install Railwayc
-      run: npm i -g @railway/cli
+    -  name: Install Railway CLI
+       run: npm i -g @railway/cli
 
     - name: Deploy to Railway
       run: |
-        railway up --detach --service app 
-        railway up --detach --service postgres_db 
+        railway up --detach \
+        --dockerfile ./task-infra/Dockerfile \
+        --service app \
+        -e SPRING_DATA_SOURCE_URL=jdbc:postgresql://${{ secrets.RAILWAY_POSTGRES_HOST }}:5432/${{ secrets.POSTGRES_DB }} \
+        -e SPRING_DATA_SOURCE_USERNAME=${{ secrets.POSTGRES_USER }} \
+        -e SPRING_DATA_SOURCE_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
       env:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-        POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-        POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-        POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
