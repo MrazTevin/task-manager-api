@@ -90,10 +90,10 @@ jobs:
     -  name: Install Railway CLI
        run: npm i -g @railway/cli
 
-    - name: Deploy to Railway
+    - name: Deploy to Railway using pre-built images
       run: |
         railway up --detach \
-        --buildc="docker build -t myapp -f ./task-infra/Dockerfile ." \
+        --buildc="docker pull ghcr.io/${{ github.repository }}/millio-v1:latest" \
         --service app \
         -e SPRING_DATA_SOURCE_URL=jdbc:postgresql://${{ secrets.RAILWAY_POSTGRES_HOST }}:5432/${{ secrets.POSTGRES_DB }} \
         -e SPRING_DATA_SOURCE_USERNAME=${{ secrets.POSTGRES_USER }} \
