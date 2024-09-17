@@ -92,6 +92,8 @@ jobs:
 
     - name: Deploy to Railway
       run: |
+        railway init
+        railway link
         railway up --detach --service app ./task-infra/registry-compose.yaml
         railway up --detach --service postgres_db ./task-infra/registry-compose.yaml
       env:
