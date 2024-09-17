@@ -94,8 +94,8 @@ jobs:
       run: |
         railway init
         railway link
-        railway up --detach --service app ./task-infra/registry-compose.yaml
-        railway up --detach --service postgres_db ./task-infra/registry-compose.yaml
+        railway up --detach --service app 
+        railway up --detach --service postgres_db 
       env:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
         POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
