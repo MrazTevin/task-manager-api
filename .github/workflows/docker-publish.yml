@@ -87,13 +87,11 @@ jobs:
       env:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
-    - name: Install Render CLI
-      run: curl -fsSL https://render.com/static/cli/install.sh | bash
-
-    - name: Install Render CLI
+   
+    - name: Install Render CLI via npm
       run: |
-        curl -fsSL https://render.com/static/cli/install.sh | bash
-        echo 'export PATH="$HOME/.render-cli/bin:$PATH"' >> ~/.bashrc
+        npm install -g @render/cli
+        echo 'export PATH="$(npm bin -g):$PATH"' >> ~/.bashrc
         source ~/.bashrc
       shell: bash
 
