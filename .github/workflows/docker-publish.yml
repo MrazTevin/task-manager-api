@@ -96,3 +96,6 @@ jobs:
         railway up --detach --service postgres_db ./task-infra/registry-compose.yaml
       env:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+        POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+        POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
