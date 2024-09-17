@@ -93,7 +93,7 @@ jobs:
     - name: Deploy to Railway
       run: |
         railway up --detach \
-        --dockerfile=./task-infra/Dockerfile \
+        --buildc="docker build -t myapp -f ./task-infra/Dockerfile ." \
         --service app \
         -e SPRING_DATA_SOURCE_URL=jdbc:postgresql://${{ secrets.RAILWAY_POSTGRES_HOST }}:5432/${{ secrets.POSTGRES_DB }} \
         -e SPRING_DATA_SOURCE_USERNAME=${{ secrets.POSTGRES_USER }} \
