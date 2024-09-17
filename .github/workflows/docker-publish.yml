@@ -92,7 +92,7 @@ jobs:
 
     - name: Deploy to Railway
       run: |
-        railway init
+        railway login
         railway link
         railway up --detach --service app 
         railway up --detach --service postgres_db 
