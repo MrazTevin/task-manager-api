@@ -87,17 +87,20 @@ jobs:
       env:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
-    - name: Install Railwayc
-      run: npm i -g @railway/cli
 
-    - name: Deploy to Railway
-      run: |
-        railway init
-        railway link
-        railway up --detach --service app ./task-infra/registry-compose.yaml
-        railway up --detach --service postgres_db ./task-infra/registry-compose.yaml
-      env:
-        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-        POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-        POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-        POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+    -  name: Deploy Application Image to Render
+       uses: johnbeynon/render-deploy-action@v0.0.8
+       with:
+          service-id: ${{ secrets.RENDER_APP_SERVICE_ID }} 
+          api-key: ${{ secrets.RENDER_API_KEY }}
+          branch: main  
+          docker-image: ghcr.io/${{ github.repository }}:millio
+          env-vars: |
+            RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+            SPRING_DATA_SOURCE_URL=jdbc:postgresql://${{ secrets.RENDER_POSTGRES_HOST }}:5432/${{ secrets.POSTGRES_DB }}
+            SPRING_DATA_SOURCE_USERNAME=${{ secrets.POSTGRES_USER }}
+            SPRING_DATA_SOURCE_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+       env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+
+    
