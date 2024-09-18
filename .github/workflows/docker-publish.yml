@@ -102,7 +102,7 @@ jobs:
           RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
 
     - name: Deploy PostgreSQL Image to Render
-      uses: render-examples/deploy-action@v1
+      uses:  johnbeynon/render-deploy-action@v0.0.8
       with:
         service-id: ${{ secrets.RENDER_DB_SERVICE_ID }}  # Your PostgreSQL service ID from Render
         branch: main  # Adjust the branch as needed
