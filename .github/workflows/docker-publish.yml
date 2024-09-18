@@ -46,6 +46,12 @@ jobs:
         
         # Extract the directory containing the Dockerfile
         DOCKER_CONTEXT=$(dirname "$DOCKERFILE_PATH")
+
+         # Ensure application-prod.properties exists
+        if [ ! -f "./src/main/resources/application-prod.properties" ]; then
+          echo "application-prod.properties not found"
+          exit 1
+        fi
         
         # Build and push the application image
         docker build -t ghcr.io/${REPO_NAME}:millio-v1 -f "$DOCKERFILE_PATH" "$DOCKER_CONTEXT"
