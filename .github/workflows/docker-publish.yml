@@ -88,14 +88,25 @@ jobs:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
 
-    - name: Install Render CLI
-      run: curl -fsSL https://render.com/download-cli | bash
-      shell: bash
-
+    -  name: Deploy Application Image to Render
+       uses: johnbeynon/render-deploy-action@v0.0.8
+       with:
+          service-id: ${{ secrets.RENDER_APP_SERVICE_ID }} 
+          branch: main  
+          docker-image: ghcr.io/${{ github.repository }}:millio
+          env-vars: |
+            SPRING_DATA_SOURCE_URL=jdbc:postgresql://${{ secrets.RENDER_POSTGRES_HOST }}:5432/${{ secrets.POSTGRES_DB }}
+            SPRING_DATA_SOURCE_USERNAME=${{ secrets.POSTGRES_USER }}
+            SPRING_DATA_SOURCE_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+       env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
 
     - name: Deploy PostgreSQL Image to Render
-      run: |
-        render services update dpg-crl0hgrqf0us73cmfm7g-a \
-          --docker-image ghcr.io/${{ github.repository }}:millio-db
+      uses: render-examples/deploy-action@v1
+      with:
+        service-id: ${{ secrets.RENDER_DB_SERVICE_ID }}  # Your PostgreSQL service ID from Render
+        branch: main  # Adjust the branch as needed
+        docker-image: ghcr.io/${{ github.repository }}:millio-db
       env:
         RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+
