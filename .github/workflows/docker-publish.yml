@@ -90,9 +90,9 @@ jobs:
     - name: Install Render CLI via npm
       run: |
         npm install -g @render/cli
-        echo 'export PATH="$(npm bin -g):$PATH"' >> ~/.bashrc
-        source ~/.bashrc
+        echo 'export PATH="$(npm bin -g):$PATH"' >> $GITHUB_ENV
       shell: bash
+
 
     - name: Deploy Application Image to Render
       run: |
