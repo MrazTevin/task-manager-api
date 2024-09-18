@@ -94,15 +94,10 @@ jobs:
       shell: bash
 
 
-    - name: Deploy Application Image to Render
-      run: |
-        render services update srv-crl0esogph6c73anil0g \
-          --docker-image ghcr.io/${{ github.repository }}:millio-v1 \
-          --env SPRING_DATA_SOURCE_URL=jdbc:postgresql://${{ secrets.RENDER_POSTGRES_HOST }}:5432/${{ secrets.POSTGRES_DB }} \
-          --env SPRING_DATA_SOURCE_USERNAME=${{ secrets.POSTGRES_USER }} \
-          --env SPRING_DATA_SOURCE_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
-      env:
-        RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+    - name: Install Render CLI
+      run: curl -fsSL https://render.com/download-cli | bash
+      shell: bash
+
 
     - name: Deploy PostgreSQL Image to Render
       run: |
