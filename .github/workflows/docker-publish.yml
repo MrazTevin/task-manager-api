@@ -87,12 +87,6 @@ jobs:
       env:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
-    - name: Install Render CLI via npm
-      run: |
-        npm install -g @render/cli
-        echo 'export PATH="$(npm bin -g):$PATH"' >> $GITHUB_ENV
-      shell: bash
-
 
     - name: Install Render CLI
       run: curl -fsSL https://render.com/download-cli | bash
